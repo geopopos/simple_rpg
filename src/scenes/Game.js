@@ -32,6 +32,28 @@ export default class GameScene extends Phaser.Scene {
         
         // update our camera
         this.cameras.main.startFollow(this.player);
+
+        // create animations for player movement
+        this.anims.create({
+            key: 'down',
+            frames: this.anims.generateFrameNumbers('characters', {frames: [1,2,1,0]}),
+            frameRate: 10,
+        });
+        this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('characters', {frames:[13,14,13,12]}),
+            frameRate: 5,
+        });
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('characters', {frames:[25,26,25,24]}),
+            frameRate: 10,
+        });
+        this.anims.create({
+            key: 'up',
+            frames: this.anims.generateFrameNumbers('characters', {frames:[37,38,37,36]}),
+            frameRate: 10,
+        });
     }
 
     update() {

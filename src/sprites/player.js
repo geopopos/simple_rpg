@@ -19,15 +19,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // check if up or down arrow is pressed
         if(cursors.up.isDown){
             this.setVelocityY(-this.velocity);
+            this.anims.play('up', true);
         }else if (cursors.down.isDown){
             this.setVelocityY(this.velocity);
-        }
-
-        // check if left or right arrow is pressed
-        if(cursors.left.isDown){
+            this.anims.play('down', true);
+        }else if(cursors.left.isDown){
             this.setVelocityX(-this.velocity);
+            this.anims.play('left', true);
         }else if (cursors.right.isDown){
             this.setVelocityX(this.velocity);
+            this.anims.play('right', true);
         }
     }
 }
