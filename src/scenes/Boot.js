@@ -16,7 +16,9 @@ export default class BootScene extends Phaser.Scene {
         // load in the spritesheet
         this.load.spritesheet('RPGpack_sheet', '../../assets/spritesheets/RPGpack_sheet.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('characters', '../../assets/spritesheets/personajes-lanto.png', {frameWidth: 32, frameHeight: 32});
-        this.load.spritesheet('portal', '../../assets/spritesheets/raft.png', {frameWidth: 64, frameHeight: 64});
+        this.load.image('portal', '../../assets/spritesheets/raft.png', {frameWidth: 64, frameHeight: 64});
+        // load in our coin sprite
+        this.load.image('coin', '../../assets/spritesheets/coin_01.png');
     }
 
     create() {
