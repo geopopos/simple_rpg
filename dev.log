@@ -1,9 +1,15 @@
 To-Do:
-- add enemies
 - allow player to shoot enemy
 - add inventory
 - add melee combat ability (sword maybe :D)
 
+Bugs:
+- When the player enters a new seen a new instance 
+  of the player class is initiated. this causes the players health to be reset to 3.
+
+06-01-2019:
+- add enemies
+- make player lose health when touches enemy
 
 05-31-2019:
 - add collecting coins functionality

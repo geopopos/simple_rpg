@@ -2,6 +2,7 @@ import 'phaser';
 import Player from '../sprites/player';
 import Portal from '../sprites/portal';
 import Coins from '../groups/coins';
+import Enemies from '../groups/enemies';
 
 export default class GameScene extends Phaser.Scene {
     constructor(key){
@@ -13,6 +14,7 @@ export default class GameScene extends Phaser.Scene {
         this._LEVELS = data.levels;
         this._NEWGAME = data.newGame;
         this.loadingLevel = false;
+        if(this._NEWGAME) this.events.emit('newGame');
     }
 
     create() {
@@ -31,8 +33,10 @@ export default class GameScene extends Phaser.Scene {
         this.coins = this.map.createFromObjects('Coins', 'Coin', { key: 'coin' });
         // create group to hold coin sprites
         this.coinsGroup = new Coins(this.physics.world, this, [], this.coins);
-
-
+        // creating the enemies
+        this.enemies = this.map.createFromObjects('Enemies', 'Enemy', {});
+        this.enemiesGroup = new Enemies(this.physics.world, this, [], this.enemies);
+        
         // add collisions
         this.addCollisions();
         
@@ -68,7 +72,9 @@ export default class GameScene extends Phaser.Scene {
 
     addCollisions() {
         this.physics.add.collider(this.player, this.blockedLayer);
-        this.physics.add.overlap(this.player, this.portal, this.loadNextLevel.bind(this));
+        this.physics.add.collider(this.enemies, this.blockedLayer);
+        this.physics.add.overlap(this.player, this.enemiesGroup, this.player.enemyCollision.bind(this.player));
+        this.physics.add.overlap(this.player, this.portal, this.loadNextLevel.bind(this, false));
         this.physics.add.overlap(this.coinsGroup, this.player, this.coinsGroup.collectCoin.bind(this.coinsGroup));
     }
 
@@ -118,11 +124,13 @@ export default class GameScene extends Phaser.Scene {
         });
     }
 
-    loadNextLevel () {
+    loadNextLevel (endGame = false) {
         if(!this.loadingLevel){
             this.cameras.main.fade(200, 90, 90, 100);
             this.cameras.main.on('camerafadeoutcomplete', () => {
-                if(this._LEVEL === 1){
+                if(endGame){
+                    this.scene.restart({level: 1, levels: this._LEVELS, newGame: true})
+                }else if(this._LEVEL === 1){
                     this.scene.restart({level: 2, levels: this._LEVELS, newGame: false})
                 }else if(this._LEVEL === 2){
                     this.scene.restart({level: 1, levels: this._LEVELS, newGame: false})
