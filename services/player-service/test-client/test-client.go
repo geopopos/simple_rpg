@@ -14,7 +14,7 @@ import (
 func sendEv(topic string, p micro.Publisher) {
 	t := time.NewTicker(time.Second)
 	i := 0
-	for _ = range t.C {
+	for range t.C {
 		// create new event
 		ev := &proto.MovementEvent{
 			GUID:      "turdmongler",
@@ -37,7 +37,7 @@ func sendEv(topic string, p micro.Publisher) {
 func main() {
 	// create a service
 	service := micro.NewService(
-		micro.Name("go.micro.cli.pubsub"),
+		micro.Name("go.micro.cli.test-client"),
 	)
 	// parse command line
 	service.Init()

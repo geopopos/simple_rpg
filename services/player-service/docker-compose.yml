@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    build: .
+    image: "${DOCKER_REPO}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
+    networks:
+       - overlay
+    ports:
+     - "3000:3000"
+
+networks:
+  overlay:
