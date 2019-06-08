@@ -31,10 +31,10 @@ var _ context.Context
 var _ client.Option
 var _ server.Option
 
-// Client API for Player service
+// Client API for PlayerService service
 
 type PlayerService interface {
-	Hello(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
+	GetPlayer(ctx context.Context, in *PlayerRequest, opts ...client.CallOption) (*PlayerResponse, error)
 }
 
 type playerService struct {
@@ -47,7 +47,7 @@ func NewPlayerService(name string, c client.Client) PlayerService {
 		c = client.NewClient()
 	}
 	if len(name) == 0 {
-		name = "player"
+		name = "playerservice"
 	}
 	return &playerService{
 		c:    c,
@@ -55,9 +55,9 @@ func NewPlayerService(name string, c client.Client) PlayerService {
 	}
 }
 
-func (c *playerService) Hello(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "Player.Hello", in)
-	out := new(Response)
+func (c *playerService) GetPlayer(ctx context.Context, in *PlayerRequest, opts ...client.CallOption) (*PlayerResponse, error) {
+	req := c.c.NewRequest(c.name, "PlayerService.GetPlayer", in)
+	out := new(PlayerResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -65,27 +65,27 @@ func (c *playerService) Hello(ctx context.Context, in *Request, opts ...client.C
 	return out, nil
 }
 
-// Server API for Player service
+// Server API for PlayerService service
 
-type PlayerHandler interface {
-	Hello(context.Context, *Request, *Response) error
+type PlayerServiceHandler interface {
+	GetPlayer(context.Context, *PlayerRequest, *PlayerResponse) error
 }
 
-func RegisterPlayerHandler(s server.Server, hdlr PlayerHandler, opts ...server.HandlerOption) error {
-	type player interface {
-		Hello(ctx context.Context, in *Request, out *Response) error
+func RegisterPlayerServiceHandler(s server.Server, hdlr PlayerServiceHandler, opts ...server.HandlerOption) error {
+	type playerService interface {
+		GetPlayer(ctx context.Context, in *PlayerRequest, out *PlayerResponse) error
 	}
-	type Player struct {
-		player
+	type PlayerService struct {
+		playerService
 	}
-	h := &playerHandler{hdlr}
-	return s.Handle(s.NewHandler(&Player{h}, opts...))
+	h := &playerServiceHandler{hdlr}
+	return s.Handle(s.NewHandler(&PlayerService{h}, opts...))
 }
 
-type playerHandler struct {
-	PlayerHandler
+type playerServiceHandler struct {
+	PlayerServiceHandler
 }
 
-func (h *playerHandler) Hello(ctx context.Context, in *Request, out *Response) error {
-	return h.PlayerHandler.Hello(ctx, in, out)
+func (h *playerServiceHandler) GetPlayer(ctx context.Context, in *PlayerRequest, out *PlayerResponse) error {
+	return h.PlayerServiceHandler.GetPlayer(ctx, in, out)
 }

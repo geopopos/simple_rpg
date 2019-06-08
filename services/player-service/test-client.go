@@ -13,17 +13,20 @@ func main() {
 
 	cli := proto.NewPlayerService("go.micro.srv.user", service.Client())
 	// names := []string{"Geopopos", "Sleyva", "turdmongler"}
-	requests := []*proto.Request{
-		&proto.Request{Name: "Geopopos"},
-		&proto.Request{Name: "Sleyva"},
-		&proto.Request{Name: "turdmongler"},
+	requests := []*proto.PlayerRequest{
+		&proto.PlayerRequest{PlayerGUID: "Geopopos"},
+		&proto.PlayerRequest{PlayerGUID: "Sleyva"},
+		&proto.PlayerRequest{PlayerGUID: "turdmongler"},
 	}
 	for _, request := range requests {
-		rsp, err := cli.Hello(context.TODO(), request)
+		rsp, err := cli.GetPlayer(context.TODO(), request)
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		log.Print(rsp)
+		if rsp.Player == nil {
+		   log.Print("No player exists with this GUID");
+		} else {
+		  log.Print(rsp)
+		}
 	}
 }

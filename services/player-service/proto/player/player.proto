@@ -1,13 +1,23 @@
 syntax = "proto3";
 
-service Player {
-	rpc Hello(Request) returns (Response) {}
+service PlayerService {
+	rpc GetPlayer(PlayerRequest) returns(PlayerResponse) {};
 }
 
-message Request {
-	string name = 1;
+message PlayerRequest {
+	string PlayerGUID = 1;
 }
 
-message Response {
-	string msg = 1;
+message PlayerResponse {
+	Player player = 1;
+}
+
+message Player {
+	string GUID = 1;
+	string username = 2;
+	string mapGUID = 3;
+	int64  xPos = 4;
+	int64  yPos = 5;
+	int64  health = 6;
+	int64  maxHealth = 7;
 }

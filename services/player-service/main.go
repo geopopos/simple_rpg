@@ -14,22 +14,56 @@ import (
 // CLI args
 var playerService = "go.micro.srv.user"
 
+type PlayerStore interface {
+	GetPlayer(GUID string) (*proto.Player, error)
+}
+
+type MemoryStore struct {
+	Store []*proto.Player
+}
+
+func NewMemoryStore() *MemoryStore {
+	player := &proto.Player{
+		GUID:      "turdmongler",
+		Username:  "tmongler",
+		MapGUID:   "some-guid",
+		XPos:      5,
+		YPos:      7,
+		Health:    10,
+		MaxHealth: 100,
+	}
+	playerStore := []*proto.Player{player}
+	return &MemoryStore{playerStore}
+}
+
+func (m *MemoryStore) GetPlayer(GUID string) (*proto.Player, error) {
+	for _, user := range m.Store {
+		if user.GUID == GUID {
+			return user, nil
+		}
+	}
+	return nil, fmt.Errorf("player not found")
+}
+
 // PlayerService defines a player service
 type PlayerService struct {
-	playerStore []*proto.Request
+	Players PlayerStore
 }
 
 // NewPlayerService will create a cache and return player service
 func NewPlayerService() *PlayerService {
-	playerStore := []*proto.Request{}
-	return &PlayerService{playerStore}
+	memoryStore := NewMemoryStore()
+	return &PlayerService{memoryStore}
 }
 
 // Hello recieves a request and returns response
-func (p *PlayerService) Hello(ctx context.Context, req *proto.Request, rsp *proto.Response) error {
-	p.playerStore = append(p.playerStore, req)
-	rsp.Msg = fmt.Sprintf("New List is %v", p.playerStore)
-	return nil
+func (p *PlayerService) GetPlayer(ctx context.Context, req *proto.PlayerRequest, rsp *proto.PlayerResponse) (err error) {
+	rsp.Player, err = p.Players.GetPlayer(req.PlayerGUID)
+	if err != nil && err.Error() == "player not found" {
+		rsp.Player = nil
+		return nil
+	}
+	return
 }
 
 func main() {
@@ -44,7 +78,7 @@ func main() {
 	)
 	playerService.Init()
 
-	proto.RegisterPlayerHandler(playerService.Server(), NewPlayerService())
+	proto.RegisterPlayerServiceHandler(playerService.Server(), NewPlayerService())
 	if err := playerService.Run(); err != nil {
 		log.Fatalf("failed to run server: %v", err)
 	}

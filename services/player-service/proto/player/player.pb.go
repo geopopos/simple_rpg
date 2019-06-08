@@ -20,99 +20,194 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type Request struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+type PlayerRequest struct {
+	PlayerGUID           string   `protobuf:"bytes,1,opt,name=PlayerGUID,proto3" json:"PlayerGUID,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Request) Reset()         { *m = Request{} }
-func (m *Request) String() string { return proto.CompactTextString(m) }
-func (*Request) ProtoMessage()    {}
-func (*Request) Descriptor() ([]byte, []int) {
+func (m *PlayerRequest) Reset()         { *m = PlayerRequest{} }
+func (m *PlayerRequest) String() string { return proto.CompactTextString(m) }
+func (*PlayerRequest) ProtoMessage()    {}
+func (*PlayerRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_41d803d1b635d5c6, []int{0}
 }
 
-func (m *Request) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Request.Unmarshal(m, b)
+func (m *PlayerRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PlayerRequest.Unmarshal(m, b)
 }
-func (m *Request) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Request.Marshal(b, m, deterministic)
+func (m *PlayerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PlayerRequest.Marshal(b, m, deterministic)
 }
-func (m *Request) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Request.Merge(m, src)
+func (m *PlayerRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PlayerRequest.Merge(m, src)
 }
-func (m *Request) XXX_Size() int {
-	return xxx_messageInfo_Request.Size(m)
+func (m *PlayerRequest) XXX_Size() int {
+	return xxx_messageInfo_PlayerRequest.Size(m)
 }
-func (m *Request) XXX_DiscardUnknown() {
-	xxx_messageInfo_Request.DiscardUnknown(m)
+func (m *PlayerRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_PlayerRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Request proto.InternalMessageInfo
+var xxx_messageInfo_PlayerRequest proto.InternalMessageInfo
 
-func (m *Request) GetName() string {
+func (m *PlayerRequest) GetPlayerGUID() string {
 	if m != nil {
-		return m.Name
+		return m.PlayerGUID
 	}
 	return ""
 }
 
-type Response struct {
-	Msg                  string   `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+type PlayerResponse struct {
+	Player               *Player  `protobuf:"bytes,1,opt,name=player,proto3" json:"player,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Response) Reset()         { *m = Response{} }
-func (m *Response) String() string { return proto.CompactTextString(m) }
-func (*Response) ProtoMessage()    {}
-func (*Response) Descriptor() ([]byte, []int) {
+func (m *PlayerResponse) Reset()         { *m = PlayerResponse{} }
+func (m *PlayerResponse) String() string { return proto.CompactTextString(m) }
+func (*PlayerResponse) ProtoMessage()    {}
+func (*PlayerResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_41d803d1b635d5c6, []int{1}
 }
 
-func (m *Response) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Response.Unmarshal(m, b)
+func (m *PlayerResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PlayerResponse.Unmarshal(m, b)
 }
-func (m *Response) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Response.Marshal(b, m, deterministic)
+func (m *PlayerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PlayerResponse.Marshal(b, m, deterministic)
 }
-func (m *Response) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Response.Merge(m, src)
+func (m *PlayerResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PlayerResponse.Merge(m, src)
 }
-func (m *Response) XXX_Size() int {
-	return xxx_messageInfo_Response.Size(m)
+func (m *PlayerResponse) XXX_Size() int {
+	return xxx_messageInfo_PlayerResponse.Size(m)
 }
-func (m *Response) XXX_DiscardUnknown() {
-	xxx_messageInfo_Response.DiscardUnknown(m)
+func (m *PlayerResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_PlayerResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Response proto.InternalMessageInfo
+var xxx_messageInfo_PlayerResponse proto.InternalMessageInfo
 
-func (m *Response) GetMsg() string {
+func (m *PlayerResponse) GetPlayer() *Player {
 	if m != nil {
-		return m.Msg
+		return m.Player
+	}
+	return nil
+}
+
+type Player struct {
+	GUID                 string   `protobuf:"bytes,1,opt,name=GUID,proto3" json:"GUID,omitempty"`
+	Username             string   `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	MapGUID              string   `protobuf:"bytes,3,opt,name=mapGUID,proto3" json:"mapGUID,omitempty"`
+	XPos                 int64    `protobuf:"varint,4,opt,name=xPos,proto3" json:"xPos,omitempty"`
+	YPos                 int64    `protobuf:"varint,5,opt,name=yPos,proto3" json:"yPos,omitempty"`
+	Health               int64    `protobuf:"varint,6,opt,name=health,proto3" json:"health,omitempty"`
+	MaxHealth            int64    `protobuf:"varint,7,opt,name=maxHealth,proto3" json:"maxHealth,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Player) Reset()         { *m = Player{} }
+func (m *Player) String() string { return proto.CompactTextString(m) }
+func (*Player) ProtoMessage()    {}
+func (*Player) Descriptor() ([]byte, []int) {
+	return fileDescriptor_41d803d1b635d5c6, []int{2}
+}
+
+func (m *Player) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Player.Unmarshal(m, b)
+}
+func (m *Player) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Player.Marshal(b, m, deterministic)
+}
+func (m *Player) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Player.Merge(m, src)
+}
+func (m *Player) XXX_Size() int {
+	return xxx_messageInfo_Player.Size(m)
+}
+func (m *Player) XXX_DiscardUnknown() {
+	xxx_messageInfo_Player.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Player proto.InternalMessageInfo
+
+func (m *Player) GetGUID() string {
+	if m != nil {
+		return m.GUID
 	}
 	return ""
 }
 
+func (m *Player) GetUsername() string {
+	if m != nil {
+		return m.Username
+	}
+	return ""
+}
+
+func (m *Player) GetMapGUID() string {
+	if m != nil {
+		return m.MapGUID
+	}
+	return ""
+}
+
+func (m *Player) GetXPos() int64 {
+	if m != nil {
+		return m.XPos
+	}
+	return 0
+}
+
+func (m *Player) GetYPos() int64 {
+	if m != nil {
+		return m.YPos
+	}
+	return 0
+}
+
+func (m *Player) GetHealth() int64 {
+	if m != nil {
+		return m.Health
+	}
+	return 0
+}
+
+func (m *Player) GetMaxHealth() int64 {
+	if m != nil {
+		return m.MaxHealth
+	}
+	return 0
+}
+
 func init() {
-	proto.RegisterType((*Request)(nil), "Request")
-	proto.RegisterType((*Response)(nil), "Response")
+	proto.RegisterType((*PlayerRequest)(nil), "PlayerRequest")
+	proto.RegisterType((*PlayerResponse)(nil), "PlayerResponse")
+	proto.RegisterType((*Player)(nil), "Player")
 }
 
 func init() { proto.RegisterFile("player.proto", fileDescriptor_41d803d1b635d5c6) }
 
 var fileDescriptor_41d803d1b635d5c6 = []byte{
-	// 122 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x29, 0xc8, 0x49, 0xac,
-	0x4c, 0x2d, 0xd2, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x57, 0x92, 0xe5, 0x62, 0x0f, 0x4a, 0x2d, 0x2c,
-	0x4d, 0x2d, 0x2e, 0x11, 0x12, 0xe2, 0x62, 0xc9, 0x4b, 0xcc, 0x4d, 0x95, 0x60, 0x54, 0x60, 0xd4,
-	0xe0, 0x0c, 0x02, 0xb3, 0x95, 0x64, 0xb8, 0x38, 0x82, 0x52, 0x8b, 0x0b, 0xf2, 0xf3, 0x8a, 0x53,
-	0x85, 0x04, 0xb8, 0x98, 0x73, 0x8b, 0xd3, 0xa1, 0xd2, 0x20, 0xa6, 0x91, 0x06, 0x17, 0x5b, 0x00,
-	0xd8, 0x30, 0x21, 0x39, 0x2e, 0x56, 0x8f, 0xd4, 0x9c, 0x9c, 0x7c, 0x21, 0x0e, 0x3d, 0xa8, 0x71,
-	0x52, 0x9c, 0x7a, 0x30, 0x9d, 0x4a, 0x0c, 0x49, 0x6c, 0x60, 0xdb, 0x8c, 0x01, 0x01, 0x00, 0x00,
-	0xff, 0xff, 0x3a, 0x55, 0x8d, 0x3a, 0x7d, 0x00, 0x00, 0x00,
+	// 235 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x54, 0x90, 0x41, 0x4b, 0x03, 0x31,
+	0x10, 0x85, 0x5d, 0x5b, 0xb3, 0xee, 0xa8, 0x15, 0xe6, 0x20, 0xa1, 0x88, 0x96, 0x9c, 0x7a, 0x8a,
+	0x58, 0x7f, 0x80, 0x17, 0xa1, 0x7a, 0x2b, 0x2b, 0xfe, 0x80, 0x28, 0x03, 0x15, 0xba, 0x4d, 0x4c,
+	0x52, 0x69, 0xff, 0x95, 0x3f, 0x51, 0x32, 0xc9, 0x6a, 0x7b, 0x7b, 0xef, 0x7b, 0x99, 0x07, 0x79,
+	0x70, 0xee, 0x56, 0x66, 0x47, 0x5e, 0x3b, 0x6f, 0xa3, 0x55, 0x77, 0x70, 0xb1, 0x60, 0xdf, 0xd2,
+	0xd7, 0x86, 0x42, 0xc4, 0x1b, 0x80, 0x0c, 0xe6, 0x6f, 0x2f, 0x4f, 0xb2, 0x9a, 0x54, 0xd3, 0xa6,
+	0xdd, 0x23, 0xea, 0x1e, 0x46, 0xfd, 0x41, 0x70, 0x76, 0x1d, 0x08, 0x6f, 0x41, 0xe4, 0x4a, 0x7e,
+	0x7d, 0x36, 0xab, 0x75, 0x79, 0x50, 0xb0, 0xfa, 0xa9, 0x40, 0x64, 0x84, 0x08, 0xc3, 0xbd, 0x5e,
+	0xd6, 0x38, 0x86, 0xd3, 0x4d, 0x20, 0xbf, 0x36, 0x1d, 0xc9, 0x63, 0xe6, 0x7f, 0x1e, 0x25, 0xd4,
+	0x9d, 0x71, 0x7c, 0x32, 0xe0, 0xa8, 0xb7, 0xa9, 0x69, 0xbb, 0xb0, 0x41, 0x0e, 0x27, 0xd5, 0x74,
+	0xd0, 0xb2, 0x4e, 0x6c, 0x97, 0xd8, 0x49, 0x66, 0x49, 0xe3, 0x15, 0x88, 0x25, 0x99, 0x55, 0x5c,
+	0x4a, 0xc1, 0xb4, 0x38, 0xbc, 0x86, 0xa6, 0x33, 0xdb, 0xe7, 0x1c, 0xd5, 0x1c, 0xfd, 0x83, 0xd9,
+	0x63, 0x3f, 0xcb, 0x2b, 0xf9, 0xef, 0xcf, 0x0f, 0x42, 0x0d, 0xcd, 0x9c, 0x62, 0xf9, 0xc5, 0x48,
+	0x1f, 0x6c, 0x36, 0xbe, 0xd4, 0x87, 0x93, 0xa8, 0xa3, 0x77, 0xc1, 0xf3, 0x3e, 0xfc, 0x06, 0x00,
+	0x00, 0xff, 0xff, 0x98, 0xa0, 0xac, 0xeb, 0x6e, 0x01, 0x00, 0x00,
 }
