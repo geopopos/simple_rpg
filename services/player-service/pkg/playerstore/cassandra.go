@@ -1,10 +1,10 @@
 package playerstore
 
 import (
-	"fmt"
-
 	proto "github.com/geopopos/simple_rpg/services/player-service/proto/player"
 	"github.com/gocql/gocql"
+	"github.com/scylladb/gocqlx"
+	"github.com/scylladb/gocqlx/qb"
 )
 
 // CassandraStore is the store type that stores everything
@@ -27,12 +27,23 @@ func NewCassandraStore() (*CassandraStore, error) {
 
 // GetPlayer returns a player given the GUID
 func (m *CassandraStore) GetPlayer(GUID string) (*proto.Player, error) {
-	// TODO
-	return nil, fmt.Errorf("player not found")
+	var player *proto.Player
+	session, err := m.Cassandra.CreateSession()
+	if err != nil {
+		return nil, err
+	}
+	stmt, names := qb.Select("players.player").Where(qb.Eq("guid")).ToCql()
+	q := gocqlx.Query(session.Query(stmt), names).BindMap(qb.M{
+		"guid": GUID,
+	})
+
+	if err := q.GetRelease(&player); err != nil {
+		return nil, err
+	}
+	return player, nil
 }
 
 // UpdatePlayer updates player information
 func (m *CassandraStore) UpdatePlayer(player *proto.Player) error {
-	// TODO
 	return nil
 }
