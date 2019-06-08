@@ -38,3 +38,19 @@ func (m *MemoryStore) GetPlayer(GUID string) (*proto.Player, error) {
 	}
 	return nil, fmt.Errorf("player not found")
 }
+
+// UpdatePlayer updates player information
+func (m *MemoryStore) UpdatePlayer(player *proto.Player) error {
+	oldPlayer, err := m.GetPlayer(player.GUID)
+	if err != nil {
+		return err
+	}
+	// TODO there has got to be a better way to update pointer
+	// but this is not a prod datastore so don't care atm
+	oldPlayer.Health = player.Health
+	oldPlayer.MapGUID = player.MapGUID
+	oldPlayer.XPos = player.XPos
+	oldPlayer.YPos = player.YPos
+	oldPlayer.Username = player.Username
+	return nil
+}

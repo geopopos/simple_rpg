@@ -21,3 +21,11 @@ message Player {
 	int64  health = 6;
 	int64  maxHealth = 7;
 }
+
+message MovementEvent {
+	string GUID = 1;
+	int64 timestamp = 2;
+	int64 xPos = 3;
+	int64 yPos = 4;
+	string mapGUID = 5;
+}

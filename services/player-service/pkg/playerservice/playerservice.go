@@ -5,17 +5,20 @@ import (
 
 	"github.com/geopopos/simple_rpg/services/player-service/pkg/playerstore"
 	proto "github.com/geopopos/simple_rpg/services/player-service/proto/player"
+
+	"github.com/sirupsen/logrus"
 )
 
 // PlayerService defines a player service
 type PlayerService struct {
 	Players playerstore.PlayerStore
+	Logger  *logrus.Logger
 }
 
 // NewPlayerService will create a cache and return player service
-func NewPlayerService() *PlayerService {
+func NewPlayerService(logger *logrus.Logger) *PlayerService {
 	memoryStore := playerstore.NewMemoryStore() // TODO this should be configurable
-	return &PlayerService{memoryStore}
+	return &PlayerService{memoryStore, logger}
 }
 
 // GetPlayer recieves request for player information and reads from datastore and returns response

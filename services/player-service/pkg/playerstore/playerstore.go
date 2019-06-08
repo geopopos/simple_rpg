@@ -8,4 +8,5 @@ import (
 // with the underlying storage for our players
 type PlayerStore interface {
 	GetPlayer(GUID string) (*proto.Player, error)
+	UpdatePlayer(*proto.Player) error
 }
