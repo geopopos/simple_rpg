@@ -3,6 +3,7 @@ package playersubscriber
 import (
 	"context"
 
+	"github.com/geopopos/simple_rpg/services/player-service/pkg/config"
 	"github.com/geopopos/simple_rpg/services/player-service/pkg/playerstore"
 	proto "github.com/geopopos/simple_rpg/services/player-service/proto/player"
 	"github.com/sirupsen/logrus"
@@ -15,9 +16,24 @@ type PlayerSubscriber struct {
 }
 
 // NewPlayerSubscriber will create a cache and return player subscriber
-func NewPlayerSubscriber(logger *logrus.Logger) *PlayerSubscriber {
-	memoryStore := playerstore.NewMemoryStore() // TODO this should be configurable
-	return &PlayerSubscriber{memoryStore, logger}
+func NewPlayerSubscriber(logger *logrus.Logger, conf *config.Configuration) *PlayerSubscriber {
+
+	var store playerstore.PlayerStore
+
+	switch conf.Database.Type {
+	case config.DBTypeMemory:
+		store = playerstore.NewMemoryStore()
+	case config.DBTypeCassandra:
+		cass, err := playerstore.NewCassandraStore(conf)
+		if err != nil {
+			logger.Fatalf("err initilizing store: %s", err)
+		}
+		store = cass
+	}
+
+	logger.Infof("Database %s Initialized Successfully for subscriber", conf.Database.Type)
+
+	return &PlayerSubscriber{store, logger}
 }
 
 // UpdatePosition will update the users position on the map in datastorage

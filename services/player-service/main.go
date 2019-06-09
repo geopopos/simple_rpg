@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/geopopos/simple_rpg/services/player-service/pkg/config"
 	"github.com/geopopos/simple_rpg/services/player-service/pkg/playerservice"
 	"github.com/geopopos/simple_rpg/services/player-service/pkg/playersubscriber"
 	proto "github.com/geopopos/simple_rpg/services/player-service/proto/player"
@@ -21,20 +22,47 @@ func main() {
 	logger := micrologrus.NewMicroLogrus(golog)
 	log.SetLogger(logger)
 
+	// Config
+	defaults := map[string]interface{}{
+		"server": map[string]interface{}{
+			"name": playerService,
+		},
+		"database": map[string]interface{}{
+			"type":  "memory",
+			"port":  0,
+			"hosts": "",
+		},
+	}
+
+	viper, err := config.NewConfig("config", defaults)
+	if err != nil {
+		if err.Error() == "Config not found" {
+			golog.Warn("Config not found using defaults")
+		} else {
+			golog.Fatalf("err reading config: %s", err)
+		}
+	}
+
+	var conf config.Configuration
+	if err := viper.Unmarshal(&conf); err != nil {
+		golog.Fatalf("err reading config: %s", err)
+	}
+
+	// Create Service
 	playerService := micro.NewService(
 		micro.Name(playerService),
 		micro.WrapHandler(logging.LogWrapper),
 	)
 	playerService.Init()
 
-	service := playerservice.NewPlayerService(golog)
-	subscriber := playersubscriber.NewPlayerSubscriber(golog)
+	service := playerservice.NewPlayerService(golog, &conf)
+	subscriber := playersubscriber.NewPlayerSubscriber(golog, &conf)
 
 	if err := proto.RegisterPlayerServiceHandler(playerService.Server(), service); err != nil {
 		log.Fatalf("err registering servie: %s", err)
 	}
 
-	if err := micro.RegisterSubscriber("rpg.player-movement", playerService.Server(), subscriber); err != nil {
+	if err := micro.RegisterSubscriber(conf.Subscriber.Topic, playerService.Server(), subscriber); err != nil {
 		log.Fatalf("err registering subscriber: %s", err)
 	}
 

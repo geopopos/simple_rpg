@@ -1,6 +1,7 @@
 package playerstore
 
 import (
+	"github.com/geopopos/simple_rpg/services/player-service/pkg/config"
 	proto "github.com/geopopos/simple_rpg/services/player-service/proto/player"
 	"github.com/gocql/gocql"
 	"github.com/scylladb/gocqlx"
@@ -15,7 +16,7 @@ type CassandraStore struct {
 }
 
 // NewCassandraStore creates new cassandra store
-func NewCassandraStore() (*CassandraStore, error) {
+func NewCassandraStore(conf *config.Configuration) (*CassandraStore, error) {
 	cluster := gocql.NewCluster("192.168.1.1", "192.168.1.2", "192.168.1.3")
 	cluster.Keyspace = "players"
 	cluster.Consistency = gocql.Quorum
